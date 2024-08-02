@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:drinkit/providers/cart_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:drinkit/models/drink.dart';
 
@@ -19,4 +20,6 @@ class ApiService {
       throw Exception('Failed to load drinks');
     }
   }
+
+  processOrder(List<CartItem> cart) {}
 }

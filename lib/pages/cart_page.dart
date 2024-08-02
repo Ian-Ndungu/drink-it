@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drinkit/providers/cart_provider.dart';
+import 'package:drinkit/providers/loader_provider.dart';
 import 'package:drinkit/utils/colors.dart';
 import 'package:drinkit/widgets/big_text.dart';
 import 'package:drinkit/widgets/small_text.dart';
-import 'package:drinkit/providers/loader_provider.dart';
+import 'package:drinkit/services/api_service.dart'; // Import your API service
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -15,6 +16,62 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  final ApiService _apiService = ApiService();
+
+  Future<void> _checkout() async {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final loaderProvider = Provider.of<LoaderProvider>(context, listen: false);
+
+    loaderProvider.showLoader();
+
+    try {
+      // Simulate order processing by calling your API
+      await _apiService.processOrder(cartProvider.cart);
+
+      // Clear the cart after successful order
+      cartProvider.clearCart();
+
+      // Show confirmation dialog
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Order Successful'),
+          content: const Text('Your order has been placed successfully!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pushReplacementNamed('/'); // Navigate to the main page
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      // Handle error
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Order Failed'),
+          content: Text('There was an error processing your order: $e'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      loaderProvider.hideLoader();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -164,12 +221,7 @@ class _CartPageState extends State<CartPage> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 18),
               ),
-              onPressed: () {
-                loaderProvider.showLoader();
-                Future.delayed(const Duration(seconds: 2), () {
-                  loaderProvider.hideLoader();
-                });
-              },
+              onPressed: _checkout,
               child: const Center(
                 child: BigText(
                   text: 'Checkout',
