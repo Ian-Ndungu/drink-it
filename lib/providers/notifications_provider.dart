@@ -12,9 +12,8 @@ class Notification {
   });
 }
 
-
-class NotificationsProvider with ChangeNotifier {
-  List<Notification> _notifications = [];
+class NotificationsProvider extends ChangeNotifier {
+  final List<Notification> _notifications = [];
 
   List<Notification> get notifications => _notifications;
 
