@@ -11,9 +11,10 @@ import '../models/drink.dart';
 import '../services/api_service.dart';
 
 class DrinksPage extends StatefulWidget {
-  const DrinksPage({Key? key}) : super(key: key);
+  const DrinksPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _DrinksPageState createState() => _DrinksPageState();
 }
 
@@ -32,7 +33,7 @@ class _DrinksPageState extends State<DrinksPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
-        title: BigText(text: 'All Drinks', color: Colors.white),
+        title: const BigText(text: 'All Drinks', color: Colors.white),
       ),
       body: FutureBuilder<List<Drink>>(
         future: _drinks,
@@ -48,18 +49,18 @@ class _DrinksPageState extends State<DrinksPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: BigText(
                       text: 'All Drinks',
                       color: AppColors.mainListColor,
                     ),
                   ),
                   GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: snapshot.data!.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 3 / 4,
                       crossAxisSpacing: 10,
@@ -85,7 +86,7 @@ class _DrinksPageState extends State<DrinksPage> {
                                       image: NetworkImage(drink.image_url),
                                       fit: BoxFit.cover,
                                     ),
-                                    borderRadius: BorderRadius.vertical(
+                                    borderRadius: const BorderRadius.vertical(
                                         top: Radius.circular(20)),
                                   ),
                                 ),
@@ -138,7 +139,7 @@ class _DrinksPageState extends State<DrinksPage> {
                   .addToCart(drink);
               Navigator.of(context).pop();
             },
-            child: Text('Add to Cart'),
+            child: const Text('Add to Cart'),
           ),
           TextButton(
             onPressed: () {
@@ -146,13 +147,13 @@ class _DrinksPageState extends State<DrinksPage> {
                   .addToWishlist(drink);
               Navigator.of(context).pop();
             },
-            child: Text('Add to Wishlist'),
+            child: const Text('Add to Wishlist'),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
         ],
       ),

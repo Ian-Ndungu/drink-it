@@ -7,7 +7,7 @@ import 'package:drinkit/widgets/big_text.dart';
 import 'package:drinkit/widgets/small_text.dart';
 
 class WishListPage extends StatelessWidget {
-  const WishListPage({Key? key}) : super(key: key);
+  const WishListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +15,11 @@ class WishListPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: BigText(text: 'Wish List', color: Colors.white),
+        title: const BigText(text: 'Wish List', color: Colors.white),
         backgroundColor: AppColors.mainColor,
       ),
       body: wishlist.isEmpty
-          ? Center(child: Text('Your wish list is empty'))
+          ? const Center(child: Text('Your wish list is empty'))
           : ListView.builder(
               itemCount: wishlist.length,
               itemBuilder: (context, index) {
@@ -35,17 +35,17 @@ class WishListPage extends StatelessWidget {
                     children: [
                       Text(
                         '${wishlistItem.quantity}',
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                       IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
                           Provider.of<WishlistProvider>(context, listen: false)
                               .removeFromWishlist(wishlistItem.drink);
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.add_shopping_cart, color: Colors.green),
+                        icon: const Icon(Icons.add_shopping_cart, color: Colors.green),
                         onPressed: () {
                           final cartProvider =
                               Provider.of<CartProvider>(context, listen: false);

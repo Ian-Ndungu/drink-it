@@ -5,12 +5,13 @@ import 'dart:io';
 import '../models/activity_log_entry.dart';
 import 'activitylog_page.dart';
 import '../utils/colors.dart';
-import 'settings_page.dart'; // Import the settings page
+import 'settings_page.dart'; 
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProfilePageState createState() => _ProfilePageState();
 }
 
@@ -54,26 +55,26 @@ class _ProfilePageState extends State<ProfilePage> {
     String? newPassword = await showDialog<String>(
       context: context,
       builder: (context) {
-        final TextEditingController _controller = TextEditingController();
+        final TextEditingController controller = TextEditingController();
         return AlertDialog(
-          title: Text('Change Password'),
+          title: const Text('Change Password'),
           content: TextField(
-            controller: _controller,
-            decoration: InputDecoration(labelText: 'New Password'),
+            controller: controller,
+            decoration: const InputDecoration(labelText: 'New Password'),
             obscureText: true,
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(_controller.text);
+                Navigator.of(context).pop(controller.text);
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -90,27 +91,27 @@ class _ProfilePageState extends State<ProfilePage> {
     String? newEmail = await showDialog<String>(
       context: context,
       builder: (context) {
-        final TextEditingController _controller =
+        final TextEditingController controller =
             TextEditingController(text: _email);
         return AlertDialog(
-          title: Text('Update Email'),
+          title: const Text('Update Email'),
           content: TextField(
-            controller: _controller,
-            decoration: InputDecoration(labelText: 'New Email'),
+            controller: controller,
+            decoration: const InputDecoration(labelText: 'New Email'),
             keyboardType: TextInputType.emailAddress,
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(_controller.text);
+                Navigator.of(context).pop(controller.text);
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -133,6 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await prefs.remove('email');
     await prefs.remove('profilePicUrl');
     await _logActivity('Logged Out', 'User has logged out.');
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacementNamed(context, '/login');
   }
 
@@ -179,65 +181,65 @@ class _ProfilePageState extends State<ProfilePage> {
                     : null,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // View Profile Picture Button
             if (_profilePicFile != null) ...[
               ElevatedButton.icon(
                 onPressed: _viewProfilePic,
-                icon: Icon(Icons.visibility),
-                label: Text('View Profile Picture'),
+                icon: const Icon(Icons.visibility),
+                label: const Text('View Profile Picture'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  textStyle: TextStyle(fontSize: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  textStyle: const TextStyle(fontSize: 18),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
 
             // Email
             Card(
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               elevation: 4,
               child: ListTile(
-                leading: Icon(Icons.email, color: AppColors.mainColor),
+                leading: const Icon(Icons.email, color: AppColors.mainColor),
                 title: Text(
                   'Email: $_email',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 tileColor: AppColors.mainColor.withOpacity(0.1),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Edit Email
             ListTile(
               onTap: _updateEmail,
-              leading: Icon(Icons.edit, color: AppColors.mainColor),
-              title: Text('Edit Email'),
+              leading: const Icon(Icons.edit, color: AppColors.mainColor),
+              title: const Text('Edit Email'),
               trailing:
-                  Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
+                  const Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Change Password
             ListTile(
               onTap: _changePassword,
-              leading: Icon(Icons.lock, color: AppColors.mainColor),
-              title: Text('Change Password'),
+              leading: const Icon(Icons.lock, color: AppColors.mainColor),
+              title: const Text('Change Password'),
               trailing:
-                  Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
+                  const Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Activity Log
             ListTile(
@@ -245,19 +247,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ActivityLogPage(),
+                    builder: (context) => const ActivityLogPage(),
                   ),
                 );
               },
-              leading: Icon(Icons.history, color: AppColors.mainColor),
-              title: Text('View Activity Log'),
+              leading: const Icon(Icons.history, color: AppColors.mainColor),
+              title: const Text('View Activity Log'),
               trailing:
-                  Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
+                  const Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Settings
             ListTile(
@@ -265,17 +267,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsPage(),
+                    builder: (context) => const SettingsPage(),
                   ),
                 );
               },
-              leading: Icon(Icons.settings, color: AppColors.mainColor),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings, color: AppColors.mainColor),
+              title: const Text('Settings'),
               trailing:
-                  Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
+                  const Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
           ],
         ),
@@ -299,13 +301,13 @@ class _ProfilePageState extends State<ProfilePage> {
 class FullScreenImagePage extends StatelessWidget {
   final File imageFile;
 
-  const FullScreenImagePage({required this.imageFile});
+  const FullScreenImagePage({super.key, required this.imageFile});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile Picture'),
+        title: const Text('Profile Picture'),
         backgroundColor: AppColors.mainColor,
       ),
       body: Center(

@@ -7,9 +7,10 @@ import 'package:drinkit/widgets/small_text.dart';
 import 'package:drinkit/providers/loader_provider.dart';
 
 class CartPage extends StatefulWidget {
-  const CartPage({Key? key}) : super(key: key);
+  const CartPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CartPageState createState() => _CartPageState();
 }
 
@@ -23,18 +24,18 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
-        title: BigText(
+        title: const BigText(
           text: 'Your Cart',
           color: AppColors.iconColor,
           size: 20,
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.remove_shopping_cart, color: AppColors.iconColor),
+            icon: const Icon(Icons.remove_shopping_cart, color: AppColors.iconColor),
             onPressed: () {
               loaderProvider.showLoader();
               cartProvider.clearCart();
-              Future.delayed(Duration(seconds: 1), () {
+              Future.delayed(const Duration(seconds: 1), () {
                 loaderProvider.hideLoader();
               });
             },
@@ -65,11 +66,11 @@ class _CartPageState extends State<CartPage> {
                               image: NetworkImage(item.drink.image_url),
                               fit: BoxFit.cover,
                             ),
-                            borderRadius: BorderRadius.horizontal(left: Radius.circular(20)),
+                            borderRadius: const BorderRadius.horizontal(left: Radius.circular(20)),
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -82,13 +83,13 @@ class _CartPageState extends State<CartPage> {
                                 size: 16,
                                 fontWeight: FontWeight.bold,
                               ),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               SmallText(
                                 text: '\$${item.drink.price.toStringAsFixed(2)} x ${item.quantity}',
                                 color: AppColors.mainListColor,
                                 size: 14,
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -98,25 +99,25 @@ class _CartPageState extends State<CartPage> {
                                     size: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       IconButton(
-                                        icon: Icon(Icons.remove_circle, color: AppColors.smallColor),
+                                        icon: const Icon(Icons.remove_circle, color: AppColors.smallColor),
                                         onPressed: () {
                                           cartProvider.removeFromCart(item.drink);
                                         },
                                       ),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       SmallText(
                                         text: '${item.quantity}',
                                         color: AppColors.mainListColor,
                                         size: 16,
                                       ),
-                                      SizedBox(width: 5),
+                                      const SizedBox(width: 5),
                                       IconButton(
-                                        icon: Icon(Icons.add_circle, color: AppColors.mainColor),
+                                        icon: const Icon(Icons.add_circle, color: AppColors.mainColor),
                                         onPressed: () {
                                           cartProvider.addToCart(item.drink);
                                         },
@@ -140,7 +141,7 @@ class _CartPageState extends State<CartPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                BigText(
+                const BigText(
                   text: 'Total Price:',
                   color: AppColors.mainListColor,
                   size: 18,
@@ -161,15 +162,15 @@ class _CartPageState extends State<CartPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 18),
+                padding: const EdgeInsets.symmetric(vertical: 18),
               ),
               onPressed: () {
                 loaderProvider.showLoader();
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 2), () {
                   loaderProvider.hideLoader();
                 });
               },
-              child: Center(
+              child: const Center(
                 child: BigText(
                   text: 'Checkout',
                   color: AppColors.iconColor,

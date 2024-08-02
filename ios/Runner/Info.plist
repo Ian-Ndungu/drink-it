@@ -50,5 +50,9 @@
 	<string>Need access to photo library</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Need access to camera</string>
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>metal</string>
+    </array>
 </dict>
 </plist>

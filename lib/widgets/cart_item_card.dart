@@ -10,22 +10,22 @@ class CartItemCard extends StatelessWidget {
   final Drink drink;  
 
   const CartItemCard({
-    Key? key,
+    super.key,
     required this.drink,  
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
 
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: ListTile(
         leading: Image.network(drink.image_url, fit: BoxFit.cover, width: 60, height: 60),
         title: SmallText(text: drink.name, color: Colors.black),
         subtitle: SmallText(text: '\$${drink.price.toStringAsFixed(2)}', color: Colors.black),
         trailing: IconButton(
-          icon: Icon(Icons.remove_circle, color: Colors.red),
+          icon: const Icon(Icons.remove_circle, color: Colors.red),
           onPressed: () {
             cartProvider.removeFromCart(drink); 
             ScaffoldMessenger.of(context).showSnackBar(

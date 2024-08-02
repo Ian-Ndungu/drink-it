@@ -19,6 +19,6 @@ class ActivityLogEntry {
 
   @override
   String toString() {
-    return '${activityType} at ${timestamp.toIso8601String()}: ${details}';
+    return '$activityType at ${timestamp.toIso8601String()}: $details';
   }
 }

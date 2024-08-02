@@ -8,6 +8,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -29,7 +30,9 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text,
       );
 
+      // ignore: use_build_context_synchronously
       Provider.of<LoaderProvider>(context, listen: false).hideLoader();
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, '/');
     }
   }
@@ -59,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      const Text(
                         'Login',
                         style: TextStyle(
                           fontSize: 24.0,
@@ -72,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _emailController,
                         decoration: InputDecoration(
                           labelText: 'Email',
-                          prefixIcon: Icon(Icons.email, color: AppColors.mainListColor),
+                          prefixIcon: const Icon(Icons.email, color: AppColors.mainListColor),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
@@ -94,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: 'Password',
-                          prefixIcon: Icon(Icons.lock, color: AppColors.mainListColor),
+                          prefixIcon: const Icon(Icons.lock, color: AppColors.mainListColor),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
@@ -129,10 +132,10 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           // Handle forgot password logic here
                         },
-                        child: const Text('Forgot Password?'),
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.white,
                         ),
+                        child: const Text('Forgot Password?'),
                       ),
                     ],
                   ),

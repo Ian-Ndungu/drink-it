@@ -16,10 +16,10 @@ class ActivityLogPage extends StatelessWidget {
         future: _getActivityLogEntries(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No activity log available.'));
+            return const Center(child: Text('No activity log available.'));
           }
           final logEntries = snapshot.data!;
           return ListView.builder(
@@ -28,8 +28,8 @@ class ActivityLogPage extends StatelessWidget {
               final logEntry = logEntries[index];
               return ListTile(
                 title: Text(logEntry),
-                subtitle: Text('Details here'), // Parse details if needed
-                leading: Icon(Icons.history, color: AppColors.mainColor),
+                subtitle: const Text('Details here'), // Parse details if needed
+                leading: const Icon(Icons.history, color: AppColors.mainColor),
               );
             },
           );

@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:drinkit/widgets/small_text.dart';
 
 class DrinkCard extends StatelessWidget {
+  // ignore: non_constant_identifier_names
   final String image_url;
   final String name;
   final VoidCallback onTap;
 
   const DrinkCard({
-    Key? key,
+    super.key,
+    // ignore: non_constant_identifier_names
     required this.image_url, 
     required this.name,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class DrinkCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 150,
-        margin: EdgeInsets.only(left: 20),
+        margin: const EdgeInsets.only(left: 20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -28,7 +30,7 @@ class DrinkCard extends StatelessWidget {
               color: Colors.black.withOpacity(0.1),
               blurRadius: 10,
               spreadRadius: 2,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
           ],
         ),
