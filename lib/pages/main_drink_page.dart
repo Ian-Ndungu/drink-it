@@ -1,3 +1,5 @@
+// lib/pages/main_drink_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drinkit/utils/colors.dart';
@@ -73,6 +75,12 @@ class _MainDrinkPageState extends State<MainDrinkPage> {
                   icon: Icon(Icons.shopping_cart, color: Colors.white),
                   onPressed: () {
                     Navigator.pushNamed(context, '/cart');
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.person, color: Colors.white), // Profile icon
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/profile');
                   },
                 ),
               ],
