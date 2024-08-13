@@ -1,3 +1,4 @@
+import 'package:drinkit/pages/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -276,6 +277,24 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               leading: const Icon(Icons.receipt, color: AppColors.mainColor),
               title: const Text('View Orders'),
+              trailing: const Icon(Icons.arrow_forward_ios,
+                  color: AppColors.mainColor),
+              tileColor: AppColors.mainColor.withOpacity(0.1),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            ),
+            const SizedBox(height: 20),
+
+            // Chat with Customer Support
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ChatPage()),
+                );
+              },
+              leading: const Icon(Icons.chat, color: AppColors.mainColor),
+              title: const Text('Chat with Customer Support'),
               trailing: const Icon(Icons.arrow_forward_ios,
                   color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),

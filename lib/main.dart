@@ -6,12 +6,14 @@ import 'package:drinkit/pages/cart_page.dart';
 import 'package:drinkit/pages/drinks_page.dart';
 import 'package:drinkit/pages/login_page.dart';
 import 'package:drinkit/pages/profile_page.dart'; 
-import 'package:drinkit/pages/notifications_page.dart'; // Import the notifications page
+import 'package:drinkit/pages/notifications_page.dart';
+import 'package:drinkit/pages/chat_page.dart'; 
 import 'package:drinkit/providers/cart_provider.dart';
 import 'package:drinkit/providers/wishlist_provider.dart';
 import 'package:drinkit/providers/loader_provider.dart';
 import 'package:drinkit/providers/theme_provider.dart'; 
-import 'package:drinkit/providers/notifications_provider.dart'; // Import the notifications provider
+import 'package:drinkit/providers/notifications_provider.dart'; 
+import 'package:drinkit/providers/chat_provider.dart'; 
 import 'package:drinkit/utils/theme_data.dart'; 
 
 void main() {
@@ -22,7 +24,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => WishlistProvider()),
         ChangeNotifierProvider(create: (_) => LoaderProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider(AppThemes.lightTheme)),
-        ChangeNotifierProvider(create: (_) => NotificationsProvider()), // Register the NotificationsProvider
+        ChangeNotifierProvider(create: (_) => NotificationsProvider()), 
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: const MyApp(),
     ),
@@ -48,7 +51,8 @@ class MyApp extends StatelessWidget {
             '/wishlist': (context) => const WishListPage(),
             '/cart': (context) => const CartPage(),
             '/profile': (context) => const ProfilePage(),
-            '/notifications': (context) => const NotificationsPage(), // Add the notifications route
+            '/notifications': (context) => const NotificationsPage(),
+            '/chat': (context) => const ChatPage(), 
           },
           builder: (context, child) {
             return Stack(
