@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drinkit/utils/colors.dart';
@@ -7,7 +8,6 @@ import 'package:drinkit/providers/cart_provider.dart';
 import 'package:drinkit/providers/wishlist_provider.dart';
 import '../models/drink.dart';
 import '../services/api_service.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class MainDrinkPage extends StatefulWidget {
   const MainDrinkPage({super.key});
@@ -27,12 +27,14 @@ class _MainDrinkPageState extends State<MainDrinkPage> {
   @override
   void initState() {
     super.initState();
-    _drinks = apiService.fetchDrinks().then((drinks) {
-      setState(() {
-        _allDrinks = drinks;
-        _filteredDrinks = drinks;
-      });
-      return drinks;
+    _drinks = apiService.fetchDrinks();
+    _drinks.then((drinks) {
+      if (mounted) {
+        setState(() {
+          _allDrinks = drinks;
+          _filteredDrinks = drinks;
+        });
+      }
     });
   }
 
@@ -169,7 +171,7 @@ class _MainDrinkPageState extends State<MainDrinkPage> {
                           color: AppColors.mainListColor,
                         ),
                       ),
-                      
+
                       // Grid of Drinks
                       _filteredDrinks.isEmpty
                         ? const Center(child: Text('No drinks available'))
@@ -231,7 +233,7 @@ class _MainDrinkPageState extends State<MainDrinkPage> {
                     ],
                   ),
                 ),
-                
+
                 // Floating Action Button
                 Positioned(
                   bottom: 16,

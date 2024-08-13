@@ -5,7 +5,8 @@ import 'dart:io';
 import '../models/activity_log_entry.dart';
 import 'activitylog_page.dart';
 import '../utils/colors.dart';
-import 'settings_page.dart'; 
+import 'settings_page.dart';
+import 'orders_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -191,7 +192,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 label: const Text('View Profile Picture'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainColor,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   textStyle: const TextStyle(fontSize: 18),
                 ),
               ),
@@ -206,7 +208,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 leading: const Icon(Icons.email, color: AppColors.mainColor),
                 title: Text(
                   'Email: $_email',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 tileColor: AppColors.mainColor.withOpacity(0.1),
                 contentPadding:
@@ -220,8 +223,8 @@ class _ProfilePageState extends State<ProfilePage> {
               onTap: _updateEmail,
               leading: const Icon(Icons.edit, color: AppColors.mainColor),
               title: const Text('Edit Email'),
-              trailing:
-                  const Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
+              trailing: const Icon(Icons.arrow_forward_ios,
+                  color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -233,8 +236,8 @@ class _ProfilePageState extends State<ProfilePage> {
               onTap: _changePassword,
               leading: const Icon(Icons.lock, color: AppColors.mainColor),
               title: const Text('Change Password'),
-              trailing:
-                  const Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
+              trailing: const Icon(Icons.arrow_forward_ios,
+                  color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -253,8 +256,28 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               leading: const Icon(Icons.history, color: AppColors.mainColor),
               title: const Text('View Activity Log'),
-              trailing:
-                  const Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
+              trailing: const Icon(Icons.arrow_forward_ios,
+                  color: AppColors.mainColor),
+              tileColor: AppColors.mainColor.withOpacity(0.1),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            ),
+            const SizedBox(height: 20),
+
+            // Orders
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OrdersPage(),
+                  ),
+                );
+              },
+              leading: const Icon(Icons.receipt, color: AppColors.mainColor),
+              title: const Text('View Orders'),
+              trailing: const Icon(Icons.arrow_forward_ios,
+                  color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -273,8 +296,8 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               leading: const Icon(Icons.settings, color: AppColors.mainColor),
               title: const Text('Settings'),
-              trailing:
-                  const Icon(Icons.arrow_forward_ios, color: AppColors.mainColor),
+              trailing: const Icon(Icons.arrow_forward_ios,
+                  color: AppColors.mainColor),
               tileColor: AppColors.mainColor.withOpacity(0.1),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

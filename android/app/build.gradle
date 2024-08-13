@@ -24,26 +24,32 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.drink_app"
-    compileSdk = 34 // Update to the latest stable version if necessary
-    ndkVersion = "25.2.9519653" // Optional: Specify NDK version if needed
+    compileSdk = 34
+    ndkVersion = "25.2.9519653"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
 
     defaultConfig {
         applicationId = "com.example.drink_app"
-        minSdk = 21 // Ensure this is at least 21
-        targetSdk = 34 // Update to the latest stable version if necessary
+        minSdk = 21 
+        targetSdk = 34
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
 
     buildTypes {
         release {
-            // Add your signing config if applicable
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.debug
+            minifyEnabled true // Enable proguard to shrink APK size
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 

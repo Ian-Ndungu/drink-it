@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:drinkit/providers/cart_provider.dart';
+// ignore: implementation_imports
+import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:drinkit/models/drink.dart';
 
@@ -21,5 +23,5 @@ class ApiService {
     }
   }
 
-  processOrder(List<CartItem> cart) {}
+  processOrder(List<CartItem> cart, String phoneNumber, LatLng? pickedLatLng) {}
 }
