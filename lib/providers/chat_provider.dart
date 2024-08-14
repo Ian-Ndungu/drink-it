@@ -13,7 +13,7 @@ class Message {
 }
 
 class ChatProvider with ChangeNotifier {
-  List<Message> _messages = [];
+  final List<Message> _messages = [];
 
   List<Message> get messages => _messages;
 
