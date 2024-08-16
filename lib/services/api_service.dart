@@ -24,4 +24,25 @@ class ApiService {
   }
 
   processOrder(List<CartItem> cart, String phoneNumber, LatLng? pickedLatLng) {}
+
+ Future<Map<String, List<Drink>>> fetchDrinksByCategory() async {
+    final response = await http.get(Uri.parse('$baseUrl/drinks_by_category'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final Map<String, List<Drink>> drinksByCategory = {};
+
+      for (var category in data.keys) {
+        final List<dynamic> drinksJson = data[category];
+        final List<Drink> drinks = drinksJson.map((json) => Drink.fromJson(json)).toList();
+        drinksByCategory[category] = drinks;
+      }
+
+      return drinksByCategory;
+    } else {
+      throw Exception('Failed to load drinks by category');
+    }
+  }
+
 }
+

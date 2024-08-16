@@ -1,4 +1,4 @@
-// lib/pages/drinks_page.dart
+// ignore_for_file: library_private_types_in_public_api, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +7,8 @@ import 'package:drinkit/widgets/big_text.dart';
 import 'package:drinkit/widgets/small_text.dart';
 import 'package:drinkit/providers/cart_provider.dart';
 import 'package:drinkit/providers/wishlist_provider.dart';
+import 'package:drinkit/widgets/category_chip.dart'; 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/drink.dart';
 import '../services/api_service.dart';
 
@@ -14,7 +16,6 @@ class DrinksPage extends StatefulWidget {
   const DrinksPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _DrinksPageState createState() => _DrinksPageState();
 }
 
@@ -22,10 +23,25 @@ class _DrinksPageState extends State<DrinksPage> {
   late Future<List<Drink>> _drinks;
   final ApiService apiService = ApiService();
 
+  // Category selection state
+  String _selectedCategory = 'All';
+  final List<String> _categories = [];
+
   @override
   void initState() {
     super.initState();
     _drinks = apiService.fetchDrinks();
+    _categories.add('All');
+    _categories.addAll([
+      'Coffee',
+      'Tea',
+      'Soft Drink',
+      'Spirit',
+      'Cocktail',
+      'Mocktail',
+      'Juice',
+      'Water',
+    ]);
   }
 
   @override
@@ -33,89 +49,136 @@ class _DrinksPageState extends State<DrinksPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
-        title: const BigText(text: 'All Drinks', color: Colors.white),
+        title: const Row(
+          children: [
+            Icon(FontAwesomeIcons.cocktail, color: Colors.white), // Fancy icon
+            SizedBox(width: 10),
+            BigText(text: 'Drinks', color: Colors.white),
+          ],
+        ),
       ),
-      body: FutureBuilder<List<Drink>>(
-        future: _drinks,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No drinks available'));
-          } else {
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: BigText(
-                      text: 'All Drinks',
-                      color: AppColors.mainListColor,
-                    ),
-                  ),
-                  GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 3 / 4,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                    ),
-                    itemBuilder: (context, index) {
-                      final drink = snapshot.data![index];
-                      return GestureDetector(
-                        onTap: () {
-                          _showDrinkDialog(context, drink);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.mainColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(drink.image_url),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: const BorderRadius.vertical(
-                                        top: Radius.circular(20)),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SmallText(
-                                  text: drink.name,
-                                  color: AppColors.mainListColor,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SmallText(
-                                  text: '\$${drink.price.toStringAsFixed(2)}',
-                                  color: AppColors.mainListColor,
-                                ),
-                              ),
-                            ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildCategoryFilter(),
+          Expanded(
+            child: FutureBuilder<List<Drink>>(
+              future: _drinks,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No drinks available'));
+                } else {
+                  final filteredDrinks = snapshot.data!
+                      .where((drink) =>
+                          drink.category == _selectedCategory ||
+                          _selectedCategory == 'All')
+                      .toList();
+
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: BigText(
+                            text: 'All Drinks',
+                            color: AppColors.mainListColor,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+                        GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: filteredDrinks.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 3 / 4,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemBuilder: (context, index) {
+                            final drink = filteredDrinks[index];
+                            return GestureDetector(
+                              onTap: () {
+                                _showDrinkDialog(context, drink);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.mainColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image:
+                                                NetworkImage(drink.image_url),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius:
+                                              const BorderRadius.vertical(
+                                                  top: Radius.circular(20)),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SmallText(
+                                        text: drink.name,
+                                        color: AppColors.mainListColor,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SmallText(
+                                        text:
+                                            '\$${drink.price.toStringAsFixed(2)}',
+                                        color: AppColors.smallColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryFilter() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: _categories.map((category) {
+            return CategoryChip(
+              category: category,
+              isSelected: category == _selectedCategory,
+              onSelected: (selectedCategory) {
+                setState(() {
+                  _selectedCategory = selectedCategory;
+                  _drinks = apiService.fetchDrinks(); // Re-fetch drinks
+                });
+              },
             );
-          }
-        },
+          }).toList(),
+        ),
       ),
     );
   }
