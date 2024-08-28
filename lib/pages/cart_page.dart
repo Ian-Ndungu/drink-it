@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, unnecessary_to_list_in_spreads
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:geocoding/geocoding.dart';
@@ -23,9 +21,6 @@ class _CartPageState extends State<CartPage> {
   final ApiService _apiService = ApiService();
   String? _selectedLocation;
   LatLng? _pickedLatLng;
-  final List<String> _locations = [
-    'Custom Address',
-  ];
   final TextEditingController _phoneController = TextEditingController();
 
   Future<String?> _getLocationName(LatLng latLng) async {
@@ -264,48 +259,49 @@ class _CartPageState extends State<CartPage> {
                   size: 18,
                 ),
                 const SizedBox(height: 5),
-                DropdownButton<String>(
-                  isExpanded: true,
-                  value: _selectedLocation,
-                  hint: const Text('Choose Location'),
-                  items: [
-                    ..._locations
-                        .where((String location) =>
-                            _pickedLatLng == null ||
-                            location != _formatLatLng(_pickedLatLng!))
-                        .map((String location) => DropdownMenuItem<String>(
-                              value: location,
-                              child: Text(location),
-                            )),
-                    if (_pickedLatLng != null &&
-                        !_locations.contains(_formatLatLng(_pickedLatLng!)))
-                      DropdownMenuItem<String>(
-                        value: _formatLatLng(_pickedLatLng!),
-                        child: Text(_formatLatLng(_pickedLatLng!)),
+                GestureDetector(
+                  onTap: () async {
+                    final LatLng? result = await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const MapPicker(),
                       ),
-                  ],
-                  onChanged: (String? newValue) async {
-                    if (newValue == 'Custom Address') {
-                      _pickedLatLng = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const MapPicker(),
-                        ),
-                      );
+                    );
 
-                      if (_pickedLatLng != null) {
-                        final locationName =
-                            await _getLocationName(_pickedLatLng!);
-                        setState(() {
-                          _selectedLocation =
-                              locationName ?? _formatLatLng(_pickedLatLng!);
-                        });
-                      }
-                    } else {
+                    if (result != null) {
+                      final locationName = await _getLocationName(result);
                       setState(() {
-                        _selectedLocation = newValue;
+                        _pickedLatLng = result;
+                        _selectedLocation =
+                            locationName ?? _formatLatLng(result);
                       });
                     }
                   },
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: AppColors.mainColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.mainColor, width: 1),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.location_on, color: AppColors.mainColor),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            _selectedLocation ?? 'Tap to select location',
+                            style: TextStyle(
+                              color: _selectedLocation != null
+                                  ? AppColors.mainListColor
+                                  : AppColors.listColor,
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 TextField(
@@ -321,43 +317,21 @@ class _CartPageState extends State<CartPage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const BigText(
-                  text: 'Total Price:',
-                  color: AppColors.mainListColor,
-                  size: 18,
-                ),
-                BigText(
-                  text: '\$${totalPrice.toStringAsFixed(2)}',
-                  color: AppColors.mainColor,
-                  size: 18,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.mainColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-              ),
-              onPressed: () async {
-                _checkout();
-              },
-              child: const Center(
-                child: BigText(
-                  text: 'Proceed to Checkout',
-                  color: AppColors.iconColor,
-                  size: 18,
-                ),
-              ),
-            ),
+            child: loaderProvider.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : ElevatedButton(
+                    onPressed: _checkout,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.mainColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 30),
+                    ),
+                    child: const Text('Checkout',
+                        style: TextStyle(color: Colors.white)),
+                  ),
           ),
         ],
       ),

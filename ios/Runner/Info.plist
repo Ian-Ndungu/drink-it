@@ -45,5 +45,22 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Permissions -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to update your profile picture.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to take a profile picture.</string>
+	<!-- Add these entries for Google Maps -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Your location is used to show your position on the map.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Your location is used to show your position on the map.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Your location is used to show your position on the map.</string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+    </array>
 </dict>
 </plist>
