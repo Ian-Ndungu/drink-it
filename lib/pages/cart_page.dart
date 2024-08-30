@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, unnecessary_string_interpolations, use_build_context_synchronously, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:geocoding/geocoding.dart';
@@ -29,12 +31,44 @@ class _CartPageState extends State<CartPage> {
           await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
       if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks.first;
-        return '${placemark.locality}, ${placemark.administrativeArea}, ${placemark.country}';
+
+        String detailedAddress = '';
+        if (placemark.name != null) {
+          detailedAddress += '${placemark.name}, ';
+        }
+        if (placemark.thoroughfare != null) {
+          detailedAddress += '${placemark.thoroughfare}, ';
+        }
+        if (placemark.subThoroughfare != null) {
+          detailedAddress += '${placemark.subThoroughfare}, ';
+        }
+        if (placemark.locality != null) {
+          detailedAddress += '${placemark.locality}, ';
+        }
+        if (placemark.administrativeArea != null) {
+          detailedAddress += '${placemark.administrativeArea}, ';
+        }
+        if (placemark.country != null) {
+          detailedAddress += '${placemark.country}, ';
+        }
+
+        String constituency = await _getConstituencyFromCustomService(latLng);
+        if (constituency.isNotEmpty) {
+          detailedAddress += '$constituency';
+        }
+
+        detailedAddress = detailedAddress.replaceAll(RegExp(r',\s*$'), '');
+
+        return detailedAddress.isNotEmpty ? detailedAddress : null;
       }
       return null;
     } catch (e) {
       return null;
     }
+  }
+
+  Future<String> _getConstituencyFromCustomService(LatLng latLng) async {
+    return '';
   }
 
   String _formatLatLng(LatLng latLng) {
@@ -198,43 +232,37 @@ class _CartPageState extends State<CartPage> {
                                 size: 14,
                               ),
                               const SizedBox(height: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              SmallText(
+                                text:
+                                    'Total: \$${(item.drink.price * item.quantity).toStringAsFixed(2)}',
+                                color: AppColors.mainListColor,
+                                size: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  SmallText(
-                                    text:
-                                        'Total: \$${(item.drink.price * item.quantity).toStringAsFixed(2)}',
-                                    color: AppColors.mainListColor,
-                                    size: 14,
-                                    fontWeight: FontWeight.bold,
+                                  IconButton(
+                                    icon: const Icon(Icons.remove_circle,
+                                        color: AppColors.smallColor),
+                                    onPressed: () {
+                                      cartProvider.removeFromCart(item.drink);
+                                    },
                                   ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.remove_circle,
-                                            color: AppColors.smallColor),
-                                        onPressed: () {
-                                          cartProvider
-                                              .removeFromCart(item.drink);
-                                        },
-                                      ),
-                                      const SizedBox(width: 5),
-                                      SmallText(
-                                        text: '${item.quantity}',
-                                        color: AppColors.mainListColor,
-                                        size: 16,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      IconButton(
-                                        icon: const Icon(Icons.add_circle,
-                                            color: AppColors.mainColor),
-                                        onPressed: () {
-                                          cartProvider.addToCart(item.drink);
-                                        },
-                                      ),
-                                    ],
+                                  const SizedBox(width: 5),
+                                  SmallText(
+                                    text: '${item.quantity}',
+                                    color: AppColors.mainListColor,
+                                    size: 16,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  IconButton(
+                                    icon: const Icon(Icons.add_circle,
+                                        color: AppColors.mainColor),
+                                    onPressed: () {
+                                      cartProvider.addToCart(item.drink);
+                                    },
                                   ),
                                 ],
                               ),
@@ -317,22 +345,44 @@ class _CartPageState extends State<CartPage> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const BigText(
+                  text: 'Total:',
+                  color: AppColors.mainListColor,
+                  size: 18,
+                ),
+                BigText(
+                  text: '\$${totalPrice.toStringAsFixed(2)}',
+                  color: AppColors.mainColor,
+                  size: 18,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: loaderProvider.isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : ElevatedButton(
-                    onPressed: _checkout,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.mainColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                : SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _checkout,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.mainColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 30),
+                      child: const Text(
+                        'Checkout',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                    child: const Text('Checkout',
-                        style: TextStyle(color: Colors.white)),
                   ),
-          ),
+          )
         ],
       ),
     );

@@ -52,12 +52,12 @@
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to take a profile picture.</string>
 	<!-- Add these entries for Google Maps -->
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Your location is used to show your position on the map.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>Your location is used to show your position on the map.</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Your location is used to show your position on the map.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to show your position on the map.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is used to show your position on the map.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location is used to show your position on the map.</string>
     <key>UIBackgroundModes</key>
     <array>
         <string>location</string>
