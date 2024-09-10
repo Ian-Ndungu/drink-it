@@ -21,6 +21,8 @@ dependencies:
   location: ^5.0.0
   geocoding: ^3.0.0
   font_awesome_flutter: ^10.7.0
+  fl_chart: ^0.69.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +32,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/user1.jpg
+    - assets/images/user2.jpg
+    - assets/images/user3.jpg
+    - assets/images/drink_icon1.jpeg
 
 flutter_icons:
   android: true

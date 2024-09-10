@@ -9,5 +9,5 @@ class AppColors {
   static const Color styleColor = Color(0xFFd5845a);
   static const Color smallColor = Color(0xFFe70023);
   static const Color darkColor = Color(0xFF7f7f7f);
-  // static const Color textStyle = Color(0xFF07baf3);
+  static const Color textStyle = Color(0xFF07baf3);
 }

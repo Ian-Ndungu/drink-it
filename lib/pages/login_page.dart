@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drinkit/providers/loader_provider.dart';
@@ -8,7 +10,6 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -17,9 +18,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() async {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      Provider.of<LoaderProvider>(context, listen: false).showLoader();
+      final loaderProvider = Provider.of<LoaderProvider>(context, listen: false);
+      loaderProvider.showLoader();
 
       // Simulate a login process
       await Future.delayed(const Duration(seconds: 2));
@@ -30,10 +32,17 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text,
       );
 
-      // ignore: use_build_context_synchronously
-      Provider.of<LoaderProvider>(context, listen: false).hideLoader();
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, '/');
+      // Check if the user is an admin
+      bool isAdmin = await AuthService.isAdmin();
+
+      loaderProvider.hideLoader();
+
+      // Navigate based on user role
+      if (isAdmin) {
+        Navigator.pushReplacementNamed(context, '/admin/dashboard');
+      } else {
+        Navigator.pushReplacementNamed(context, '/');
+      }
     }
   }
 
@@ -132,10 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           // Handle forgot password logic here
                         },
+                        child: const Text('Forgot Password?'),
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.white,
                         ),
-                        child: const Text('Forgot Password?'),
                       ),
                     ],
                   ),
