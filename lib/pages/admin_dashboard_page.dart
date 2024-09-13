@@ -331,12 +331,14 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      _buildUserCard('iannjagah@gmail.com', 'assets/images/user1.jpg'),
+                      _buildUserCard(
+                          'iannjagah@gmail.com', 'assets/images/user1.jpg'),
                       const SizedBox(height: 10),
                       _buildUserCard(
                           'finnesskelvin@gmail.com', 'assets/images/user2.jpg'),
                       const SizedBox(height: 10),
-                      _buildUserCard('jobkimari@gmail.com', 'assets/images/user3.jpg'),
+                      _buildUserCard(
+                          'jobkimari@gmail.com', 'assets/images/user3.jpg'),
                     ],
                   ),
                 ),
@@ -416,27 +418,44 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
-            ),
-          ],
+        padding: const EdgeInsets.all(8.0),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            double screenWidth = MediaQuery.of(context).size.width;
+            double fontSize;
+
+            if (screenWidth <= 320) {
+              fontSize = 10;
+            } else if (screenWidth < 350) {
+              fontSize = 12;
+            } else if (screenWidth < 720) {
+              fontSize = 14;
+            } else {
+              fontSize = 16;
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
