@@ -33,7 +33,7 @@ class AdminManageUsersPage extends StatelessWidget {
                 leading: CircleAvatar(
                   backgroundImage: user.imageUrl.isNotEmpty
                       ? AssetImage(user.imageUrl) as ImageProvider
-                      : AssetImage('assets/images/default_avatar.png'),
+                      : const AssetImage('assets/images/default_avatar.png'),
                   child: user.imageUrl.isEmpty
                       ? Text(
                           user.email.isNotEmpty
