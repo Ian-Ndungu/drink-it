@@ -3,31 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-// Drink model
-class Drink {
-  final String id;
-  final String name;
-  final double price;
-
-  Drink({required this.id, required this.name, required this.price});
-
-  // Convert a Drink instance to a map
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'price': price,
-      };
-
-  // Create a Drink instance from a map
-  factory Drink.fromJson(Map<String, dynamic> json) {
-    return Drink(
-      id: json['id'],
-      name: json['name'],
-      price: json['price'],
-    );
-  }
-}
+import 'package:drinkit/models/drink.dart';
 
 // Order model
 class Order {
@@ -51,22 +27,39 @@ class User {
 }
 
 class AdminProvider with ChangeNotifier {
-  // Private lists to manage state
+  // Private lists to manage the state
   final List<Drink> _drinks = [];
   final List<Order> _orders = [];
   List<User> _users = [];
 
-  // Public getters for accessing lists
+  // Public getters to access the lists
   List<Drink> get drinks => _drinks;
   List<Order> get orders => _orders;
   List<User> get users => _users;
 
+  // Constructor to initialize default users
   AdminProvider() {
-_users = [
-  User(email: 'iannjagah@gmail.com', role: 'Admin', imageUrl: 'assets/images/user1.jpg'),
-  User(email: 'finnesskelvin@gmail.com', role: 'User', imageUrl: 'assets/images/user2.jpg'),
-  User(email: 'jobkimari@gmail.com', role: 'User', imageUrl: 'assets/images/user3.jpg'),
-];
+    _users = [
+      User(
+          email: 'iannjagah@gmail.com',
+          role: 'Admin',
+          imageUrl: 'assets/images/user1.jpg'),
+      User(
+          email: 'finnesskelvin@gmail.com',
+          role: 'User',
+          imageUrl: 'assets/images/user2.jpg'),
+      User(
+          email: 'jobkimari@gmail.com',
+          role: 'User',
+          imageUrl: 'assets/images/user3.jpg'),
+    ];
+  }
+
+  // Method to set drinks
+  void setDrinks(List<Drink> drinksList) {
+    _drinks.clear();
+    _drinks.addAll(drinksList);
+    notifyListeners();
   }
 
   // Methods for managing drinks
@@ -90,15 +83,14 @@ _users = [
 
   // Method to fetch drinks from an API
   Future<void> fetchDrinks() async {
-    const url = 'https://https://drink-api-1.onrender.com/api/drinks'; 
+    const url = 'https://drink-api-1.onrender.com/api/drinks'; // Replace with your correct API URL
 
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
-        _drinks.clear();
-        _drinks.addAll(data.map((json) => Drink.fromJson(json)).toList());
-        notifyListeners();
+        List<Drink> fetchedDrinks = data.map((json) => Drink.fromJson(json)).toList();
+        setDrinks(fetchedDrinks);
       } else {
         throw Exception('Failed to load drinks');
       }
